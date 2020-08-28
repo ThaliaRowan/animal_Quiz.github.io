@@ -1,3 +1,25 @@
 #options{
     padding: 20px;
 }
+
+.hide{
+    display: none;
+}
+
+
+.anBtn {
+    background-color: #6a636c;
+    color: white;
+    border: 2px solid #e7e7e7;
+    width: 250px;
+    padding:   12px 28px;
+    margin: 5px;
+  
+}
+
+
+.anBtn:hover {
+    background-color:white; /* Green */
+    color: black;
+  }
+  

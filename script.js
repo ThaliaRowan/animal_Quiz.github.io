@@ -2,7 +2,7 @@ var cardTitle = document.querySelector("#cardTitle");
 var question = document.querySelector("#question");
 var btn = document.querySelector("#btn");
 var opt = document.querySelector("#options");
-var button = document.createElement("button");
+var anBtn = document.getElementsByClassName("anBtn");
 var time = document.querySelector('#time');
 var idx;
 var opIdx;
@@ -41,7 +41,10 @@ function myQuestion() {
     console.log(ansArr);
 
     var sect = document.createElement("div");
-    sect.innerHTML = que.answer[i];
+    var myButn = document.createElement("button");
+    myButn.classList.add('anBtn')
+    myButn.innerHTML = que.answer[i];
+    sect.appendChild(myButn);
     opt.appendChild(sect);
   }
 
@@ -58,11 +61,21 @@ function myTimer(){
 }
 
 function btnClick() {
+    btn.classList.add('hide');
     myTimer();
     myObj();
     myQuestion();
   
 }
+
+function moveAlong(e){
+    myObj();
+    myQuestion();
+  
+}
+
+
+
 
 var options = [
   {
@@ -81,7 +94,10 @@ var options = [
   {
     question: "Which bird can fly backwards?",
     answer: ["A penguin", "A hummingbird", "A crow", "A parrot"],
-  },
+  }
 ];
 
 btn.addEventListener("click", btnClick);
+for(var i = 0; i < anBtn.length; i++){
+    anBtn[i].addEventListener('click', moveAlong);
+}
