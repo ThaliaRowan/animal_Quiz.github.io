@@ -17,6 +17,7 @@ var myButn;
 var opIdx;
 var que;
 var outS;
+var usSc;
 var scores;
 var counter = 0;
 var score = 0;
@@ -115,17 +116,21 @@ function moving(){
   
 }
 
-function goingBack(){
-  high.style.display = 'none';
-document.querySelector('#question').style.display = 'block';
-}
+function storeScore(){
+  localStorage.setItem('user', usSc);
 
+  var userData = localStorage.getItem('user');
+
+  var scDiv = document.createElement('div');
+  scDiv.innerHTML = userData;
+
+  scoreMod.appendChild(scDiv);
+}
 
 
 function btnClick() {
   btn.classList.add("hide");
-  result.style.display = 'block'
-  myTimer();
+  result.style.display = 'block';
   myObj();
   myQuestion();
 }
@@ -161,31 +166,16 @@ var options = [
 
 
 btn.addEventListener("click", btnClick);
-goBack.addEventListener('click', goingBack)
+goBack.addEventListener('click', storeScore)
 document.querySelector('#inBtns').addEventListener('click', function(event){
   event.preventDefault();
   gameOver.style.display= 'none';  
   high.style.display = 'block';
   var initial = document.querySelector('#initials').value;
   var user= document.createElement('div');
-
-  user.innerHTML = initial + ':' + ' ' + score;
+    usSc = initial + ':' + ' ' + score;
+  user.innerHTML = usSc;
   scores = user.innerHTML;
   scoreBud.appendChild(user);
-
-  var nums = initial + ':' + ' ' + score;
-  window.onbeforeunload = function() {
-      localStorage.setItem('nums', nums);
-  
-  }
-  
-  
-  window.onload = function() {
-  
-      var name = localStorage.getItem('nums');
-      if (name !== null);
-      scoreMod.innerHTML = name;
-  }
-  
   
  }) 
