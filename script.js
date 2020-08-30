@@ -22,7 +22,7 @@ var counter = 0;
 var score = 0;
 var objArr = [];
 var ansArr = [];
-var secondsLeft = 5;
+var secondsLeft = 30;
 
 function myObj() {
   for (let i = 0; i < options.length; i++) {
@@ -70,12 +70,26 @@ function myQuestion() {
 
 }
 
+
+
+function myTimer() {
+  var theInterval = setInterval(() => {
+    secondsLeft--;
+    time.textContent = "Time: " + secondsLeft;
+  if(secondsLeft === 0){
+    clearInterval(theInterval);
+    quiz.style.display = 'none';
+    high.style.display = 'block';
+  }
+  }, 1000);
+
+};
+
 function checkAnswer(element) {
   var id = parseInt(element.id);
   if (id === que.rightAns) {
     result.innerHTML = "Correct!";
     score += 5;
-    console.log(score);
 
     myObj();
     myQuestion();
@@ -89,17 +103,6 @@ function checkAnswer(element) {
   }
 }
 
-function myTimer() {
-  var theInterval = setInterval(() => {
-    secondsLeft--;
-    time.textContent = "Time: " + secondsLeft;
-  if(secondsLeft === 0){
-    clearInterval(theInterval);
-    quiz.style.display = 'none';
-  }
-  }, 1000);
-
-};
 
  
 function moving(){ 
@@ -110,6 +113,11 @@ function moving(){
   }
 
   
+}
+
+function goingBack(){
+  high.style.display = 'none';
+document.querySelector('#question').style.display = 'block';
 }
 
 
@@ -149,18 +157,35 @@ var options = [
   },
 ];
 
-scoreMod.innerHTML = localStorage.getItem('user')[0].value;
+
+
 
 btn.addEventListener("click", btnClick);
+goBack.addEventListener('click', goingBack)
 document.querySelector('#inBtns').addEventListener('click', function(event){
   event.preventDefault();
   gameOver.style.display= 'none';  
   high.style.display = 'block';
   var initial = document.querySelector('#initials').value;
   var user= document.createElement('div');
+
   user.innerHTML = initial + ':' + ' ' + score;
   scores = user.innerHTML;
   scoreBud.appendChild(user);
+
+  var nums = initial + ':' + ' ' + score;
+  window.onbeforeunload = function() {
+      localStorage.setItem('nums', nums);
+  
+  }
+  
+  
+  window.onload = function() {
+  
+      var name = localStorage.getItem('nums');
+      if (name !== null);
+      scoreMod.innerHTML = name;
+  }
   
   
  }) 
