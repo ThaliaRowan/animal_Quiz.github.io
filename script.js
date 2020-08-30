@@ -2,14 +2,27 @@ var cardTitle = document.querySelector("#cardTitle");
 var question = document.querySelector("#question");
 var btn = document.querySelector("#btn");
 var opt = document.querySelector("#options");
-var anBtn = document.getElementsByClassName("anBtn");
-var time = document.querySelector('#time');
+var anBtn = document.querySelector(".anBtn");
+var result = document.querySelector("#result");
+var time = document.querySelector("#time");
+var quiz = document.querySelector('#quizBod');
+var inBtn = document.querySelector('#inBtns')
+var scoreBud = document.querySelector('#scoreBod');
+var scoreMod = document.querySelector('#scoreMod');
+var gameOver = document.querySelector('.gameOver');
+var goBack = document.querySelector('#goback')
+var high = document.querySelector('#high');
 var idx;
+var myButn;
 var opIdx;
+var que;
+var outS;
+var scores;
 var counter = 0;
+var score = 0;
 var objArr = [];
 var ansArr = [];
-var secondsLeft = 90; 
+var secondsLeft = 5;
 
 function myObj() {
   for (let i = 0; i < options.length; i++) {
@@ -20,7 +33,7 @@ function myObj() {
 
 function myQuestion() {
   idx = 0;
-  var que = objArr[idx];
+  que = objArr[idx];
   question.innerHTML = que.question;
 
   var cQuest = objArr.indexOf(que);
@@ -31,9 +44,8 @@ function myQuestion() {
   for (let i = 0; i < answers; i++) {
     ansArr.push(i);
   }
-   opt.innerHTML = '';
+  opt.innerHTML = "";
   for (let i = 0; i < answers; i++) {
-    //opIdx = 0;
     var optIdx = ansArr[idx];
 
     var cAns = ansArr.indexOf(optIdx);
@@ -41,63 +53,114 @@ function myQuestion() {
     console.log(ansArr);
 
     var sect = document.createElement("div");
-    var myButn = document.createElement("button");
-    myButn.classList.add('anBtn')
-    myButn.innerHTML = que.answer[i];
+    myButn = document.createElement("button");
+    myButn.classList.add("anBtn");
+    myButn.id = optIdx;
+    myButn.setAttribute("type", "button");
+    myButn.setAttribute("onclick", "checkAnswer(this)");
+    myButn.innerHTML = que.answer[optIdx];
     sect.appendChild(myButn);
     opt.appendChild(sect);
   }
 
   counter++;
+  moving();
+  
+ 
+
+}
+
+function checkAnswer(element) {
+  var id = parseInt(element.id);
+  if (id === que.rightAns) {
+    result.innerHTML = "Correct!";
+    score += 5;
+    console.log(score);
+
+    myObj();
+    myQuestion();
+  } else {
+    result.innerHTML = "wrong!";
+    secondsLeft = secondsLeft - 10;
+    console.log("nah");
+
+    myObj();
+    myQuestion();
+  }
+}
+
+function myTimer() {
+  var theInterval = setInterval(() => {
+    secondsLeft--;
+    time.textContent = "Time: " + secondsLeft;
+  if(secondsLeft === 0){
+    clearInterval(theInterval);
+    quiz.style.display = 'none';
+  }
+  }, 1000);
+
+};
+
+ 
+function moving(){ 
+  if(counter === 5){
+    quiz.style.display = 'none';
+    gameOver.style.display = 'block';
+
+  }
+
+  
 }
 
 
-function myTimer(){
-    var theInterval = setInterval(() => {
-        secondsLeft--
-        time.textContent = 'Time: ' +  secondsLeft;
-
-    }, 1000);
-}
 
 function btnClick() {
-    btn.classList.add('hide');
-    myTimer();
-    myObj();
-    myQuestion();
-  
+  btn.classList.add("hide");
+  result.style.display = 'block'
+  myTimer();
+  myObj();
+  myQuestion();
 }
 
-function moveAlong(e){
-    myObj();
-    myQuestion();
   
-}
-
-
 
 
 var options = [
   {
     question: "What sound do cats make?",
     answer: ["Moo", "Meow", "Woof", "Neigh"],
+    rightAns: 1,
   },
 
   {
     question: "Are dogs mamals?",
     answer: ["yes", "no"],
+    rightAns: 0,
   },
   {
     question: "A group of birds are called...",
     answer: ["A flock", "A pride", "A jet", "An aeroplane"],
+    rightAns: 0,
   },
   {
     question: "Which bird can fly backwards?",
     answer: ["A penguin", "A hummingbird", "A crow", "A parrot"],
-  }
+    rightAns: 1,
+  },
 ];
 
+scoreMod.innerHTML = localStorage.getItem('user')[0].value;
+
 btn.addEventListener("click", btnClick);
-for(var i = 0; i < anBtn.length; i++){
-    anBtn[i].addEventListener('click', moveAlong);
-}
+document.querySelector('#inBtns').addEventListener('click', function(event){
+  event.preventDefault();
+  gameOver.style.display= 'none';  
+  high.style.display = 'block';
+  var initial = document.querySelector('#initials').value;
+  var user= document.createElement('div');
+  user.innerHTML = initial + ':' + ' ' + score;
+  scores = user.innerHTML;
+  scoreBud.appendChild(user);
+  
+  
+ }) 
