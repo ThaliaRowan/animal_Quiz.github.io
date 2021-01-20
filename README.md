@@ -1,4 +1,4 @@
-# Homework4
+
 # CODING QUIZ - Do ou know your animals?
 
 With this assignment, i was to create a quiz, using javascript Dom manipulation and Events. Also to use local storage to store my results.
